@@ -3,7 +3,8 @@ import 'package:watch_app/screens/configscreen.dart';
 import 'package:watch_app/helpers/blue_helper.dart';
 import 'package:watch_app/screens/selectScreen.dart';
 
-void main() => runApp(MyApp()
+void main() => runApp(
+    MyApp()
   // MaterialApp(
   //  debugShowCheckedModeBanner: false,
   //  theme: ThemeData(

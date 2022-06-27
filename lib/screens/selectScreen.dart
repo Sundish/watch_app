@@ -1,6 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 import 'deviceScreen.dart';
 
 class MyApp extends StatelessWidget {
@@ -47,24 +48,27 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
   scan() async {
-    if (!_isScanning) {
-      scanResultList.clear();
-      flutterBlue.startScan(timeout: Duration(seconds: 4));
-      flutterBlue.scanResults.listen((results) {
-        scanResultList = results;
-        setState(() {});
-      });
-    } else {
-      flutterBlue.stopScan();
+    if (await Permission.bluetoothScan.request().isGranted) {
+      if (!_isScanning) {
+        scanResultList.clear();
+        flutterBlue.startScan(timeout: Duration(seconds: 5));
+        flutterBlue.scanResults.listen((results) {
+          scanResultList = results;
+          setState(() {
+          });
+        });
+      } else {
+        flutterBlue.stopScan();
+      }
     }
   }
 
   Widget deviceSignal(ScanResult r) {
-    return Text(r.rssi.toString());
+    return Text(r.rssi.toString(), style: Theme.of(context).textTheme.bodyText1,);
   }
 
   Widget deviceMacAddress(ScanResult r) {
-    return Text(r.device.id.id);
+    return Text(r.device.id.id, style: Theme.of(context).textTheme.bodyText1,);
   }
 
   Widget deviceName(ScanResult r) {
@@ -77,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       name = 'N/A';
     }
-    return Text(name);
+    return Text(name, style: Theme.of(context).textTheme.bodyText1,);
   }
 
   Widget leading(ScanResult r) {
